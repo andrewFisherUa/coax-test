@@ -42,9 +42,10 @@ class SlowScraper:
     def parse(self, link):
         content = requests.get(link).content
         soup = bs(content, 'html.parser')
-        next_link = soup.find('a', rel='next')['href']
+        next_link = soup.find('a', rel='next')
         if next_link is None:
             return None
+        next_link = next_link['href']
         next_link = self.BASE_URL_TMPL.format(next_link)
         links = soup.select('a.custom-link.custom-link--big.custom-link--inverted.custom-link--blue')
         for item in links:
