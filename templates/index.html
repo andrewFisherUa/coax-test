@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+    <head>
+       <link href="{{ url_for('static', filename='bootstrap.min.css') }}" rel="stylesheet" >
+    </head>
+    <body>
+    <div class="container fluid">
+
+        {% if error %}
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                <div class="alert alert-danger" role="alert">
+                   <strong>{{error}}</strong>
+                </div>
+                </div>
+            </div>
+        {% endif %}
+    
+        <div clas="row">
+            <form method="POST" action="/calc">
+                
+                <div class="form-group">
+                    <label for="wall_height"> Висота стіни у метрах </label>
+                    <input class="form-control" name="wall_height" type="text" placeholder="Wall height in meters" />
+                    <label for="wall_width"> Ширина стіни у метрах </label>
+                    <input class="form-control" name="wall_width" type="text" placeholder="Wall height in meters" />
+                </div>
+                
+                <input class="btn btn-primary" type="submit" value="Розрахувати" />
+            </form> 
+        </div>
+
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <table class="table">
+                    <tr>
+                        <td>Площа стіни м2</td>
+                        <td>Площа плитки м2</td>
+                        <td>Площа залишків м2</td>
+                        <td>К-сть плитки шт.</td>
+                        <td>Розміри плитки (м.) В x Ш</td>
+                        <td>Назва плитки</td>
+                    </tr>
+                    {% for item in results %}
+                        <tr>
+                            <td>{{item.wall_area_m}}</td>
+                            <td>{{item.tile_area_m}}</td>
+                            <td>{{item.area_diff_m}}</td>
+                            <td>{{item.tile_count}}</td>
+                            <td>{{item.tile.height / 1000}} X {{item.tile.width / 1000}}</td>
+                            <td><a href="{{item.tile.url}}" target="_blank">{{item.tile.name}}</a></td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+
+    </div>
+    </body>
+</html>
